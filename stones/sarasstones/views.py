@@ -4,11 +4,14 @@ from .models import Borrow, Stone, User
 from django.utils.datastructures import MultiValueDictKeyError
 from django.utils import timezone
 
+
 # Create your views here.
 def index(request):
     stones = Stone.objects.all()
+    users = User.objects.all()
     context = {
-        'stones': stones
+        'stones': stones,
+        'users': users,
     }
     return render(request, 'index.html', context)
 
@@ -18,7 +21,7 @@ def detail(request, mineral_id):
     users = User.objects.all()
     context = {
         'stone': stone,
-        'users': users
+        'users': users,
     }
     return render(request, 'detail.html', context)
 
@@ -35,6 +38,7 @@ def checkout(request, mineral_id):
         returned = False
     if borrower:
         stone.checked_out = True
+        stone.current_borrower = borrower
         transaction = Borrow(stone=stone, user=borrower, check_out=timezone.now())
         transaction.save()
         stone.save()
@@ -43,6 +47,7 @@ def checkout(request, mineral_id):
         transaction.check_in = timezone.now()
         transaction.save()
         stone.checked_out = False
+        stone.current_borrower = None
         stone.save()
     context = {
         'stone': stone,

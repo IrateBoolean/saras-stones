@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}
+{{ stone.stone_name }}
+{% endblock title %}
+{% block content %}
+<h1>{{ stone.stone_name }}</h1>
+<ul>
+    <li> Mineral : {{ stone.stone_mineral.mineral }} </li>
+    <li> Cut : {{ stone.stone_cut.cut }}</li>
+    <li> Color : {{ stone.stone_color.color }}</li>
+    <li> Acquired : {{ stone.acquire_date }}</li>
+    <li> Checked Out: {{ stone.checked_out }}</li>
+</ul>
+{% endblock content %}

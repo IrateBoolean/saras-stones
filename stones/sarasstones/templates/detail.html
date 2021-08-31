@@ -6,9 +6,37 @@
 <h1>{{ stone.name }}</h1>
 <ul>
     <li> Mineral : {{ stone.mineral.name }} </li>
-    <li> Cut : {{ stone.cut.name }}</li>
-    <li> Color : {{ stone.color.name }}</li>
+    <li> Cut : {{ stone.cut.name.title }}</li>
+    <li> Color : {{ stone.color.name.title }}</li>
     <li> Acquired : {{ stone.acquire_date }}</li>
-    <li> Checked Out: {{ stone.checked_out }}</li>
+    {% if stone.checked_out %}
+    <li> Presently checked out</li>
+    {% else %}
+    <li> Presently Available</li>
+    {% endif %}
 </ul>
+
+{% if not stone.checked_out %}
+<form action="{% url 'checkout' stone.id %}" method="post">
+{% csrf_token %}
+    {% for user in users %}
+    <input type="submit" name="user" value="{{ user }}">
+    {% endfor %}
+</form>
+{% else %}
+{% if borrower %}
+{{ borrower.name }} has borrowed the {{ stone.name }}
+{% endif %}
+<form action="{% url 'checkout' stone.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" name="return" value="return">
+</form>
+
+{# add logic to check in #}
+Stone unavailable
+{% endif %}
 {% endblock content %}
+
+
+
+

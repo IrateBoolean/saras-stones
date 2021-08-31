@@ -1,5 +1,7 @@
 from django.shortcuts import get_object_or_404, render, reverse
-from .models import Stone
+from django.http import HttpResponseRedirect
+from .models import Stone, User
+from django.utils.datastructures import MultiValueDictKeyError
 
 # Create your views here.
 def index(request):
@@ -12,9 +14,35 @@ def index(request):
 
 def detail(request, mineral_id):
     stone = get_object_or_404(Stone, pk=mineral_id)
-    return render(request, 'detail.html', {'stone': stone})
+    users = User.objects.all()
+    context = {
+        'stone': stone,
+        'users': users
+    }
+    return render(request, 'detail.html', context)
 
 
-def detail(request, mineral_id):
+def checkout(request, mineral_id):
     stone = get_object_or_404(Stone, pk=mineral_id)
-    return render(request, 'detail.html', {'stone': stone})
+    try:
+        borrower = User.objects.filter(name=request.POST['user']).first
+    except MultiValueDictKeyError as e:
+        borrower = False
+    try:
+        returned = request.POST['return']
+    except MultiValueDictKeyError as e:
+        returned = False
+    if borrower:
+        stone.checked_out = True
+        stone.save()
+    else:
+        stone.checked_out = False
+        stone.save()
+    context = {
+        'stone': stone,
+        'borrower': borrower,
+        'returned': request,
+    }
+    return HttpResponseRedirect(reverse('detail', args=(stone.id,)))
+
+    render(request, 'detail.html', context)

@@ -3,11 +3,11 @@
 {{ stone.stone_name }}
 {% endblock title %}
 {% block content %}
-<h1>{{ stone.stone_name }}</h1>
+<h1>{{ stone.name }}</h1>
 <ul>
-    <li> Mineral : {{ stone.stone_mineral.mineral }} </li>
-    <li> Cut : {{ stone.stone_cut.cut }}</li>
-    <li> Color : {{ stone.stone_color.color }}</li>
+    <li> Mineral : {{ stone.mineral.name }} </li>
+    <li> Cut : {{ stone.cut.name }}</li>
+    <li> Color : {{ stone.color.name }}</li>
     <li> Acquired : {{ stone.acquire_date }}</li>
     <li> Checked Out: {{ stone.checked_out }}</li>
 </ul>

@@ -5,8 +5,8 @@ Sara's Stones
 {% block content %}
 <h1>Welcome to Sara's Stones, where we can get things!</h1>
 <ol>
-    {% for num in numbers %}
-        <li>{{ num }} : {{ hello_world }}</li>
+    {% for stone in stones %}
+        <li><a href="{% url 'detail' stone.id %}">{{ stone.name }}</a></li>
     {% endfor %}
 </ol>
 {% endblock content %}

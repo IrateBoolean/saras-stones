@@ -3,35 +3,34 @@ from django.utils import timezone
 # Create your models here.
 
 class Color(models.Model):
-    color = models.CharField(max_length=32, null=False, unique=True)
+    name = models.CharField(max_length=32, unique=True)
 
     def __str__(self):
-        return self.color
+        return self.name
 
 class Mineral(models.Model):
-    mineral = models.CharField(max_length=100, null=False, unique=True)
-    brief = models.CharField(max_length=200)
-    properties = models.CharField(max_length=2000)
+    name = models.CharField(max_length=100, unique=True)
+    brief = models.CharField(max_length=200, null=True)
+    properties = models.CharField(max_length=2000, null=True)
 
     def __str__(self):
-        return self.mineral
+        return self.name
 
 class Cut(models.Model):
-    cut = models.CharField(max_length=64, null=False, unique=True)
+    name = models.CharField(max_length=64, unique=True)
 
     def __str__(self):
-        return self.cut
+        return self.name
 
 class Stone(models.Model):
-    stone_name = models.CharField(max_length=200)
-    stone_mineral = models.ForeignKey(Mineral, on_delete=models.PROTECT, null=False)
-    stone_cut = models.ForeignKey(Cut, on_delete=models.PROTECT, null=False)
-    stone_color = models.ForeignKey(Color, on_delete=models.PROTECT, null=False)
-    notes = models.CharField(max_length=2000)
-    img_path = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=200)
+    mineral = models.ForeignKey(Mineral, on_delete=models.PROTECT)
+    cut = models.ForeignKey(Cut, on_delete=models.PROTECT)
+    color = models.ForeignKey(Color, on_delete=models.PROTECT)
+    notes = models.CharField(max_length=2000, null=True)
+    img_path = models.CharField(max_length=100, unique=True, null=True)
     acquire_date = models.DateTimeField()
-    checked_out = models.BooleanField(null=False)
+    checked_out = models.BooleanField()
 
     def __str__(self):
-        return self.stone_name
-
+        return self.name

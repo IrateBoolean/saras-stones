@@ -40,3 +40,10 @@ class User(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Borrow(models.Model):
+    stone = models.ForeignKey(Stone, on_delete=models.PROTECT)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    check_out = models.DateTimeField()
+    check_in = models.DateTimeField(null=True, blank=True)

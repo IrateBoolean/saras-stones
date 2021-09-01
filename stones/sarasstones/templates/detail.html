@@ -1,4 +1,13 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<style>
+    img {
+    width: 600px;
+    height: auto;
+    }
+</style>
+{% endblock head %}
 {% block title %}
 {{ stone.stone_name }}
 {% endblock title %}
@@ -31,12 +40,14 @@
     {% csrf_token %}
     <input type="submit" name="return" value="return">
 </form>
-
-{# add logic to check in #}
-Stone unavailable
 {% endif %}
+{% if image_paths %}
+    {% for image in image_paths %}
+        <img src="{% get_static_prefix %}img/{{ image.filename }}">
+    {% endfor %}
+{% else %}
+<h1>No Images!</h1>
+{% endif %}
+
 {% endblock content %}
-
-
-
 

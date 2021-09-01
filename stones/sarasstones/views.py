@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render, reverse
 from django.http import HttpResponseRedirect
-from .models import Borrow, Stone, User
+from .models import Borrow, ImagePath, Stone, User
 from django.utils.datastructures import MultiValueDictKeyError
 from django.utils import timezone
 
@@ -19,9 +19,12 @@ def index(request):
 def detail(request, mineral_id):
     stone = get_object_or_404(Stone, pk=mineral_id)
     users = User.objects.all()
+    images = ImagePath.objects.all()
+    stone_images = images.filter(stone_image=stone)
     context = {
         'stone': stone,
         'users': users,
+        'image_paths' : stone_images,
     }
     return render(request, 'detail.html', context)
 

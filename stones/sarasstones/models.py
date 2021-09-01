@@ -34,13 +34,21 @@ class User(models.Model):
         return self.name
 
 
+class ImagePath(models.Model):
+    stone_image = models.ForeignKey("Stone", on_delete=models.PROTECT)
+    filename = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return f'{self.stone_image.name} : {self.filename}'
+
+
 class Stone(models.Model):
     name = models.CharField(max_length=200)
     mineral = models.ForeignKey(Mineral, on_delete=models.PROTECT)
     cut = models.ForeignKey(Cut, on_delete=models.PROTECT)
     color = models.ForeignKey(Color, on_delete=models.PROTECT)
     notes = models.CharField(max_length=2000, null=True, blank=True)
-    img_path = models.CharField(max_length=100, unique=True, null=True, blank=True)
+    image = models.ForeignKey(ImagePath, on_delete=models.PROTECT, blank=True, null=True)
     acquire_date = models.DateTimeField()
     checked_out = models.BooleanField()
     current_borrower = models.ForeignKey(User, on_delete=models.PROTECT, null=True, blank=True)
